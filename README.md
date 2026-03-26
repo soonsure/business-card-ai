@@ -1,40 +1,90 @@
 # Business Card AI
 
-A simple Next.js app that lets users upload or take a photo of a business card, extract contact fields with a local model, enrich company info with live web lookup, and export the result as CSV.
+Business Card AI is a Next.js app for turning paper business cards into structured company and contact data.
 
-## Features
+It supports batch imports, front-and-back card scanning, browser camera capture, local model extraction with Ollama, web-based company enrichment, and CSV export in a fixed business-friendly column order.
 
-- Batch process multiple business cards in one session
+## Highlights
+
+- Batch import multiple business cards in one session
 - Support front and back images for the same card
-- Upload or capture a business card image
-- Live browser camera preview with capture and retake
-- Extract `first_name`, `last_name`, `company`, `job_title`, `email`, `phone`, and `website`
-- Review multiple results on a separate page with an editable form
-- Enrich the record with `company_description`, `address`, `country`, `region`, `company_category`, and a source URL
-- Export CSV in this order: company name, address, country, region, email, phone, contact person, job title, company website, company category
-- Tailwind-based clean UI
+- Upload files or capture cards directly with the browser camera
+- Extract contact fields using a local Ollama vision model
+- Enrich company data by combining live website lookup with a local text model
+- Review and edit multiple extracted records in a single result screen
+- Export CSV in this column order:
+  - Company Name
+  - Address
+  - Country
+  - Region
+  - Email
+  - Phone
+  - Contact Person
+  - Job Title
+  - Company Website
+  - Company Category
 
-## Setup
+## Tech Stack
 
-1. Install dependencies:
+- Next.js App Router
+- React
+- Tailwind CSS
+- Ollama for local AI inference
+- Lightweight server-side web fetching for company enrichment
+
+## What It Extracts
+
+From each card, the app can capture or infer:
+
+- First name
+- Last name
+- Company name
+- Job title
+- Email
+- Phone
+- Website
+- Address
+- Region
+- Country
+- Company description
+- Company category
+- Source URL used for enrichment
+
+Any field not found can remain empty.
+
+## Local Setup
+
+1. Clone the repository
+
+```bash
+git clone https://github.com/soonsure/business-card-ai.git
+cd business-card-ai
+```
+
+2. Install dependencies
 
 ```bash
 npm install
 ```
 
-2. Copy the environment template and add your key:
+3. Install Ollama
 
-```bash
-cp .env.example .env.local
-```
+Download from:
+[https://ollama.com/download/mac](https://ollama.com/download/mac)
 
-3. Install and start Ollama, then pull a local model:
+4. Pull the recommended model
 
 ```bash
 ollama pull gemma3
 ```
 
-4. Set your local Ollama config in `.env.local`:
+5. Create your local environment file
+
+```bash
+cp .env.example .env.local
+```
+
+6. Use this local configuration
 
 ```bash
 OLLAMA_BASE_URL=http://127.0.0.1:11434
@@ -42,23 +92,24 @@ OLLAMA_VISION_MODEL=gemma3
 OLLAMA_TEXT_MODEL=gemma3
 ```
 
-5. Start the app:
+7. Start the app
 
 ```bash
 npm run dev
 ```
 
-Then open [http://localhost:3000](http://localhost:3000).
+Then open:
+[http://localhost:3000](http://localhost:3000)
 
 ## Team Use
 
-If your coworkers need to use it on the same network, run:
+If coworkers are on the same local network, you can run:
 
 ```bash
 npm run dev:host
 ```
 
-Then share your Mac's local IP address, for example:
+Then share your local IP address, for example:
 
 ```bash
 http://192.168.1.20:3000
@@ -66,13 +117,43 @@ http://192.168.1.20:3000
 
 Notes:
 
-- File upload will work for coworkers over the local network.
-- Browser camera access may require HTTPS in some browsers when not using `localhost`.
-- For regular shared team use, consider running the app on an internal HTTPS server or reverse proxy.
+- Standard file upload works well over a local network
+- Browser camera access may require HTTPS on some devices and browsers
+- For team-wide daily use, consider deploying this app behind an internal HTTPS reverse proxy
+
+## How It Works
+
+1. Upload or capture one or more business cards
+2. Optionally provide both front and back images per card
+3. Send the card images to a local Ollama model for extraction
+4. Review and edit each extracted record
+5. Enrich company information using website lookup plus local model summarization
+6. Export the final dataset as CSV
+
+## CSV Output
+
+The exported CSV uses this exact column order:
+
+```text
+Company Name, Address, Country, Region, Email, Phone, Contact Person, Job Title, Company Website, Company Category
+```
 
 ## Notes
 
-- The app uses `sessionStorage` to carry extracted data from the upload page to the result page, so no database or authentication is required.
-- The extraction route sends the business card image to your local Ollama server.
-- The enrichment route fetches the company website or search results from the web, then asks Ollama to summarize the company details.
-- Recommended first model: `gemma3`, because it can handle both image understanding and text generation in one local setup.
+- No authentication is required
+- No cloud AI API key is required
+- Card extraction runs against your local Ollama instance
+- Company enrichment uses live web fetching, so that step requires internet access
+- Uploaded images are stored temporarily on the local machine so batch processing does not exceed browser storage quotas
+
+## Roadmap Ideas
+
+- Batch progress indicators
+- Clickable source links in the editor
+- Better company verification rules
+- Shared internal deployment with HTTPS
+- CRM export integrations
+
+## License
+
+MIT
