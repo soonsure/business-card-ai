@@ -67,15 +67,22 @@ cd business-card-ai
 npm install
 ```
 
+Business Card AI currently targets Node.js 20.9 or newer. If you use `nvm`, you can run:
+
+```bash
+nvm use
+```
+
 3. Install Ollama
 
 Download from:
 [https://ollama.com/download/mac](https://ollama.com/download/mac)
 
-4. Pull the recommended model
+4. Pull the recommended models
 
 ```bash
-ollama pull gemma3
+ollama pull qwen2.5vl:7b
+ollama pull qwen2.5:7b
 ```
 
 5. Create your local environment file
@@ -88,8 +95,8 @@ cp .env.example .env.local
 
 ```bash
 OLLAMA_BASE_URL=http://127.0.0.1:11434
-OLLAMA_VISION_MODEL=gemma3
-OLLAMA_TEXT_MODEL=gemma3
+OLLAMA_VISION_MODEL=qwen2.5vl:7b
+OLLAMA_TEXT_MODEL=qwen2.5:7b
 ```
 
 7. Start the app
@@ -145,6 +152,7 @@ Company Name, Address, Country, Region, Email, Phone, Contact Person, Job Title,
 - Card extraction runs against your local Ollama instance
 - Company enrichment uses live web fetching, so that step requires internet access
 - Uploaded images are stored temporarily on the local machine so batch processing does not exceed browser storage quotas
+- The repository includes a GitHub Actions workflow that runs `npm ci` and `npm run build` on pushes and pull requests
 
 ## Roadmap Ideas
 
