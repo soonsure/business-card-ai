@@ -81,8 +81,8 @@ Download from:
 4. Pull the recommended models
 
 ```bash
-ollama pull qwen2.5vl:7b
-ollama pull qwen2.5:7b
+ollama pull qwen3-vl:4b
+ollama pull qwen3.5:8b
 ```
 
 5. Create your local environment file
@@ -95,8 +95,8 @@ cp .env.example .env.local
 
 ```bash
 OLLAMA_BASE_URL=http://127.0.0.1:11434
-OLLAMA_VISION_MODEL=qwen2.5vl:7b
-OLLAMA_TEXT_MODEL=qwen2.5:7b
+OLLAMA_VISION_MODEL=qwen3-vl:4b
+OLLAMA_TEXT_MODEL=qwen3.5:8b
 ```
 
 7. Start the app
